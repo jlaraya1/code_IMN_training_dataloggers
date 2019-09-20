@@ -1,0 +1,66 @@
+Program Trace Information File for:  PROrdp.csi
+Date: 3/10/2009
+Time: 11:02:22
+
+T = Program Table Number
+N = Sequential Program Instruction Location Number
+Instruction = Instruction Number and Name
+
+Inst ExTm = Individual Instruction Execution Time
+Block ExTm = Cumulative Execution Time for program block,
+             i.e., subroutine
+Prog ExTm = Cumulative Total Program Execution Time
+
+                                                          Output Flag High
+                                   Inst  Block   Prog     Inst  Block   Prog
+                                   ExTm   ExTm   ExTm     ExTm   ExTm   ExTm
+T|N|Instruction                   (msec) (msec) (msec)   (msec) (msec) (msec)
+---------------                   ------ ------ ------   ------ ------ ------
+1|1|86 Do                           0.3    0.3    0.3      0.3    0.3    0.3
+ Output Flag Set @ 11 for Array 101
+1|2|1 Volt (SE)                    23.9   24.2   24.2     23.9   24.2   24.2
+1|3|17 Internal Temperature         6.2   30.4   30.4      6.2   30.4   30.4
+1|4|1 Volt (SE)                     4.8   35.2   35.2      4.8   35.2   35.2
+1|5|89 If (X<=>F)                   0.6   35.8   35.8      0.6   35.8   35.8
+1|6|30 Z=F x 10^n                   1.2   37.0   37.0      1.2   37.0   37.0
+1|7|95 End                          0.2   37.2   37.2      0.2   37.2   37.2
+1|8|37 Z=X*F                        1.2   38.4   38.4      1.2   38.4   38.4
+1|9|34 Z=X+F                        1.1   39.5   39.5      1.1   39.5   39.5
+1|10|34 Z=X+F                       1.1   40.6   40.6      1.1   40.6   40.6
+1|11|92 If time is                  0.7   41.3   41.3      0.7   41.3   41.3
+ Output Flag Set @ 111 for Input Location 4
+1|12|80 Set Active Storage Area     0.3   41.6   41.6      0.3   41.6   41.6
+1|13|73 Maximum                     2.2   43.8   43.8      8.0   49.6   49.6
+ Output Data 3 Values
+1|14|92 If time is                  0.7   44.5   44.5      0.7   50.3   50.3
+ Output Flag Set @ 114 for Input Location 7
+1|15|80 Set Active Storage Area     0.3   44.8   44.8      0.3   50.6   50.6
+1|16|74 Minimum                     2.0   46.8   46.8      8.0   58.6   58.6
+ Output Data 3 Values
+1|17|92 If time is                  0.7   47.5   47.5      0.7   59.3   59.3
+ Output Flag Set @ 117 for Array 1
+1|18|80 Set Active Storage Area     0.3   47.8   47.8      0.3   59.6   59.6
+1|19|77 Real Time                   0.2   48.0   48.0      3.8   63.4   63.4
+ Output Data 3 Values
+1|20|73 Maximum                     2.2   50.2   50.2      8.0   71.4   71.4
+ Output Data 1 Values
+1|21|74 Minimum                     2.0   52.2   52.2      8.0   79.4   79.4
+ Output Data 1 Values
+1|22|71 Average                     1.7   53.9   53.9      5.9   85.3   85.3
+ Output Data 1 Values
+1|23|73 Maximum                     2.2   56.1   56.1      8.0   93.3   93.3
+ Output Data 1 Values
+1|24|74 Minimum                     2.0   58.1   58.1      8.0  101.3  101.3
+ Output Data 1 Values
+1|25|71 Average                     1.7   59.8   59.8      5.9  107.2  107.2
+ Output Data 1 Values
+
+Program Table 1 Execution Interval    1.000 Seconds
+
+Table 1 Estimated Total Program Execution Time in msec   59.8 w/Output  107.2
+
+Table 1 Estimated Total Final Storage Locations used per day 2880
+
+
+
+Estimated Total Final Storage Locations used per day 2880

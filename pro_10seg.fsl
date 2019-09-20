@@ -1,0 +1,17 @@
+Final Storage Label File for:  PRO_10SEG.csi
+Date:  3/16/2009
+Time:  11:54:59
+
+42 Input_Storage  10.00 Sec
+1 pres_AVG  L
+2 hume_corr_AVG  L
+3 Year_RTM  L
+4 Day_RTM  L
+5 Hour_Minute_RTM  L
+6 pres_AVG  L
+7 hume_corr_AVG  L
+8 temp_roci_AVG  L
+9 tns_vapor_AVG  L
+
+
+Estimated Total Final Storage Locations used per day 69120

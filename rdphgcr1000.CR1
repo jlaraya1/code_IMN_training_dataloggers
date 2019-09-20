@@ -1,0 +1,67 @@
+'CR1000
+'Created by Short Cut (2.5)
+
+'Declare Variables and Units
+Public Batt_Volt,AirTC,Batt_Vo_2,pro_panelsen
+Public pres, presvap,tc,temp_roci,sum_hume,prom_hume,i
+Public hume
+Public pro_panel, ds_panel,dest,
+Units Batt_Volt=Volts
+Units AirTC=Deg C
+Units hume=%
+Units Batt_Vo_2=Volts
+
+'Define Data Tables
+'
+DataTable(Tablead,True,5)  
+	DataInterval(0,60,Min,10)
+	Average(1,pres,FP2,False)
+	Average(1,hume,FP2,False)
+	Average(1,tc,FP2,False)
+EndTable
+
+DataTable(Table1,True,10)  
+	DataInterval(0,2,Min,10)
+	Average(1,hume,FP2,False)
+EndTable
+
+DataTable(Table2,True,-1)
+	DataInterval(0,1440,Min,10)
+	Minimum(1,Batt_Volt,FP2,False,False)
+EndTable
+
+'Main Program
+BeginProg
+	Scan(1,Sec,1,0)
+	 PanelTemp (dest,250)
+		'Default Datalogger Battery Voltage measurement Batt_Volt:
+		Battery(Batt_Volt)
+		'CS500 Temperature & Relative Humidity Sensor measurements AirTC and hume:
+		VoltSe(TC,1,mV2500,1,0,0,_60Hz,0.1,-40.0)
+		VoltSe(hume,1,mV2500,2,0,0,_60Hz,0.1,0)
+		VoltSe(pres,1,mV2500,6,0,0,_60Hz,0.184,600)
+		If (hume>100) AND (hume<108) Then   hume=100
+		'presion de vapor
+		VaporPressure (presvap,tc,hume)
+		'temperatura de rocio
+		DewPoint (temp_roci,tc,hume)
+'	promedio movil, humedad relativa, ultimos 10 minutos	
+If TimeIntoInterval (0,1,Min)
+		CallTable table1
+		sum_hume=0
+		prom_hume=0
+		For i = 1 To 10
+		  	sum_hume = sum_hume + table1.hume_Avg(1,i)
+		Next i	 
+    prom_hume=sum_hume/10
+EndIf
+	
+		'Datalogger Battery Voltage measurement Batt_Vo_2:
+		Battery(Batt_Vo_2)
+		 pro_panelsen=AirTC-dest
+		'Call Data Tables and Store Data
+		CallTable(Table1)
+		CallTable(Table2)
+		CallTable(Tablead)
+NextScan
+EndProg

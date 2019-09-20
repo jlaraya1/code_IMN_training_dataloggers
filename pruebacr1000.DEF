@@ -1,0 +1,25 @@
+3/12/2009
+08:40:49
+Created by Short Cut (2.5)
+Short Cut Program:  pruebacr1000.DEF
+
+-Wiring for CR1000-
+
+  CS500 Temperature & Relative Humidity Sensor
+    1H:  Black
+    1L:  Brown
+    Ground:  Clear
+    G:  Green
+    12V:  Red
+
+-Measurement Labels-
+
+  Default Measurements
+    Batt_Volt
+
+  CS500 Temperature & Relative Humidity Sensor
+    AirTC
+    RH
+
+  Datalogger Battery Voltage
+    Batt_Vo_2

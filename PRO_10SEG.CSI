@@ -1,0 +1,365 @@
+;{CR10X}
+;
+*Table 1 Program
+  01: 10        Execution Interval (seconds)
+
+
+1:  Do (P86)
+ 1: 10       Set Output Flag High (Flag 0)
+
+
+
+
+2:  Volt (SE) (P1)
+ 1: 1        Reps
+ 2: 25       2500 mV 60 Hz Rejection Range
+ 3: 1        SE Channel
+ 4: 1        Loc [ tc        ]
+ 5: 0.1      Multiplier
+ 6: -40      Offset
+
+
+
+3:  Internal Temperature (P17)
+ 1: 2        Loc [ int_t_c   ]
+
+
+
+4:  Volt (SE) (P1)
+ 1: 1        Reps
+ 2: 5        2500 mV Slow Range
+ 3: 4        SE Channel
+ 4: 9        Loc [ hume      ]
+ 5: 0.1      Multiplier
+ 6: 0.0      Offset
+
+
+5:  If (X<=>F) (P89)
+ 1: 9        X Loc [ hume      ]
+ 2: 3        >=
+ 3: 106      F
+ 4: 30       Then Do
+
+
+     6:  Z=F x 10^n (P30)
+      1: -9       F
+      2: 1        n, Exponent of 10
+      3: 10       Z Loc [ hume_corr ]
+
+
+7:  End (P95)
+
+
+8:  Do (P86)
+ 1: 42       Set Port 2 High
+
+
+;calculo presion
+
+9:  Volt (SE) (P1)
+ 1: 1        Reps
+ 2: 25       2500 mV 60 Hz Rejection Range
+ 3: 7        SE Channel
+ 4: 11       Loc [ pres      ]
+ 5: .184     Multiplier
+ 6: 600      Offset
+
+
+10:  If time is (P92)
+ 1: 0        Minutes (Seconds --) into a
+ 2: 60       Interval (same units as above)
+ 3: 00       Command Code Option
+  
+
+11:  Set Active Storage Area (P80)
+ 1: 3        Input Storage Area
+ 2: 42       Loc [ pres_hora ]
+
+
+12:  Average (P71)^24916
+ 1: 1        Reps
+ 2: 11       Loc [ pres      ]
+
+;mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+;promedio HR de dos minutos
+
+13:  If time is (P92)
+ 1: 0        Minutes (Seconds --) into a
+ 2: 2        Interval (same units as above)
+ 3: 00       Command Code Option
+  
+
+14:  Set Active Storage Area (P80)
+ 1: 3        Input Storage Area
+ 2: 34       Loc [ hr_10     ]
+
+
+15:  Average (P71)^24187
+ 1: 1        Reps
+ 2: 10       Loc [ hume_corr ]
+
+
+16:  Block Move (P54)
+ 1: 9        No. of Values
+ 2: 26       First Source Loc [ hr_2      ]
+ 3: 1        Source Step
+ 4: 25       First Destination Loc [ hr_1      ]
+ 5: 1        Destination Step
+
+
+17:  Spatial Average (P51)
+ 1: 10       Swath
+ 2: 25       First Loc [ hr_1      ]
+ 3: 35       Avg Loc [ proesphr  ]
+
+
+
+;-----------------------------------------
+;calculo de pres de vapor
+ 
+18:  Saturation Vapor Pressure (P56)
+ 1: 8        Temperature Loc [ T_c       ]
+ 2: 12       Loc [ presvap   ]
+
+
+
+19:  Z=X*Y (P36)
+ 1: 10       X Loc [ hume_corr ]
+ 2: 12       Y Loc [ presvap   ]
+ 3: 14       Z Loc [ pres_vapo ]
+
+
+
+20:  Z=F x 10^n (P30)
+ 1: 100      F
+ 2: 0        n, Exponent of 10
+ 3: 15       Z Loc [ multi     ]
+
+21:  Z=X/Y (P38)
+ 1: 14       X Loc [ pres_vapo ]
+ 2: 15       Y Loc [ multi     ]
+ 3: 16       Z Loc [ tns_vapor ]
+
+; ------------------------------------
+;calculo temp rocio
+
+
+22:  Z=F x 10^n (P30)
+ 1: 6.1365   F
+ 2: 0        n, Exponent of 10
+ 3: 17       Z Loc [ c1        ]
+
+
+
+23:  Z=X/Y (P38)
+ 1: 16       X Loc [ tns_vapor ]
+ 2: 17       Y Loc [ c1        ]
+ 3: 18       Z Loc [ c2        ]
+
+
+24:  Z=LN(X) (P40)
+ 1: 18       X Loc [ c2        ]
+ 2: 19       Z Loc [ c3        ]
+
+25:  Z=F x 10^n (P30)
+ 1: 240.97   F
+ 2: 0        n, Exponent of 10
+ 3: 20       Z Loc [ c4        ]
+
+26:  Z=X*Y (P36)
+ 1: 19       X Loc [ c3        ]
+ 2: 20       Y Loc [ c4        ]
+ 3: 21       Z Loc [ c5        ]
+
+27:  Z=F x 10^n (P30)
+ 1: 17.502   F
+ 2: 0        n, Exponent of 10
+ 3: 22       Z Loc [ c6        ]
+
+
+28:  Z=X-Y (P35)
+ 1: 22       X Loc [ c6        ]
+ 2: 19       Y Loc [ c3        ]
+ 3: 23       Z Loc [ c7        ]
+
+29:  Z=X/Y (P38)
+ 1: 21       X Loc [ c5        ]
+ 2: 23       Y Loc [ c7        ]
+ 3: 24       Z Loc [ temp_roci ]
+
+; ----------------------------------------
+;calculo de tendencia  de la presion
+
+30:  Z=X (P31)
+ 1: 42       X Loc [ pres_hora ]
+ 2: 39       Z Loc [ tend01_4  ]
+
+
+
+31:  Block Move (P54)
+ 1: 3        No. of Values
+ 2: 37       First Source Loc [ tend01_2  ]
+ 3: 1        Source Step
+ 4: 36       First Destination Loc [ tend01_1  ]
+ 5: 1        Destination Step
+
+
+
+
+
+
+32:  Z=X-Y (P35)
+ 1: 36       X Loc [ tend01_1  ]
+ 2: 39       Y Loc [ tend01_4  ]
+ 3: 40       Z Loc [ tendencia ]
+
+;----------------------------------------
+; salidas cada  dos minutos
+
+33:  If time is (P92)
+ 1: 0        Minutes (Seconds --) into a
+ 2: 2        Interval (same units as above)
+ 3: 00       Command Code Option
+
+
+
+
+34:  Set Active Storage Area (P80)^5016
+ 1: 1        Final Storage Area 1
+ 2: 1        Array ID
+
+
+35:  Real Time (P77)^25740
+ 1: 1220     Year,Day,Hour/Minute (midnight = 2400)
+
+
+36:  Average (P71)^23347
+ 1: 1        Reps
+ 2: 11       Loc [ pres      ]
+
+37:  Average (P71)^25589
+ 1: 1        Reps
+ 2: 10       Loc [ hume_corr ]
+
+
+
+38:  Average (P71)^11784
+ 1: 1        Reps
+ 2: 24       Loc [ temp_roci ]
+
+
+39:  Average (P71)^948
+ 1: 1        Reps
+ 2: 16       Loc [ tns_vapor ]
+
+
+
+; ----------------------------------------
+40:  Z=X*F (P37)
+ 1: 1        X Loc [ tc        ]
+ 2: 1.8      F
+ 3: 3        Z Loc [ T_F       ]
+
+
+41:  Z=X+F (P34)
+ 1: 3        X Loc [ T_F       ]
+ 2: 273.2    F
+ 3: 3        Z Loc [ T_F       ]
+
+
+
+42:  Z=X+F (P34)
+ 1: 1        X Loc [ tc        ]
+ 2: 1.8      F
+ 3: 6        Z Loc [ t_k       ]
+
+
+
+
+
+
+
+
+*Table 2 Program
+  02: 0.0000    Execution Interval (seconds)
+
+*Table 3 Subroutines
+
+End Program
+
+
+
+
+-Input Locations-
+1 tc        1 2 0
+2 int_t_c   1 0 1
+3 T_F       1 1 2
+4 Tmax      1 0 0
+5 t         1 0 0
+6 t_k       1 0 1
+7 Tmin      1 0 0
+8 T_c       1 1 0
+9 hume      1 1 1
+10 hume_corr 1 3 1
+11 pres      1 2 1
+12 presvap   1 1 1
+13 preshor   1 0 0
+14 pres_vapo 1 1 1
+15 multi     1 1 1
+16 tns_vapor 1 2 1
+17 c1        1 1 1
+18 c2        1 1 1
+19 c3        1 2 1
+20 c4        1 1 1
+21 c5        1 1 1
+22 c6        1 1 1
+23 c7        1 1 1
+24 temp_roci 1 1 1
+25 hr_1      7 1 1
+26 hr_2      11 2 1
+27 hr_3      11 2 1
+28 hr_4      11 2 1
+29 hr_5      11 2 1
+30 hr_6      11 2 1
+31 hr_7      11 2 1
+32 hr_8      11 2 1
+33 hr_9      27 2 1
+34 hr_10     19 2 1
+35 proesphr  1 0 1
+36 tend01_1  7 1 1
+37 tend01_2  11 1 1
+38 tend01_3  19 1 1
+39 tend01_4  3 2 1
+40 tendencia 1 0 1
+41 pres_2    1 0 0
+42 pres_hora 1 1 1
+-Program Security-
+0000
+0000
+0000
+-Mode 4-
+-Final Storage Area 2-
+0
+-CR10X ID-
+0
+-CR10X Power Up-
+3
+-CR10X Compile Setting-
+3
+-CR10X RS-232 Setting-
+-1
+-DLD File Labels-
+0
+-Final Storage Labels-
+0,hume_MIN~9,95
+1,pres_AVG~11,24916
+2,hume_corr_AVG~10,24187
+3,1,5016
+4,Year_RTM,25740
+4,Day_RTM
+4,Hour_Minute_RTM
+5,pres_AVG~11,23347
+6,hume_corr_AVG~10,25589
+7,temp_roci_AVG~24,11784
+8,tns_vapor_AVG~16,948

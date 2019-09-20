@@ -1,0 +1,78 @@
+Program Trace Information File for:  PRO_10SEG.csi
+Date: 3/16/2009
+Time: 11:54:59
+
+T = Program Table Number
+N = Sequential Program Instruction Location Number
+Instruction = Instruction Number and Name
+
+Inst ExTm = Individual Instruction Execution Time
+Block ExTm = Cumulative Execution Time for program block,
+             i.e., subroutine
+Prog ExTm = Cumulative Total Program Execution Time
+
+                                                          Output Flag High
+                                   Inst  Block   Prog     Inst  Block   Prog
+                                   ExTm   ExTm   ExTm     ExTm   ExTm   ExTm
+T|N|Instruction                   (msec) (msec) (msec)   (msec) (msec) (msec)
+---------------                   ------ ------ ------   ------ ------ ------
+1|1|86 Do                           0.3    0.3    0.3      0.3    0.3    0.3
+ Output Flag Set @ 11 for Input Location 42
+1|2|1 Volt (SE)                    23.9   24.2   24.2     23.9   24.2   24.2
+1|3|17 Internal Temperature         6.2   30.4   30.4      6.2   30.4   30.4
+1|4|1 Volt (SE)                     4.8   35.2   35.2      4.8   35.2   35.2
+1|5|89 If (X<=>F)                   0.6   35.8   35.8      0.6   35.8   35.8
+1|6|30 Z=F x 10^n                   1.2   37.0   37.0      1.2   37.0   37.0
+1|7|95 End                          0.2   37.2   37.2      0.2   37.2   37.2
+1|8|86 Do                           0.3   37.5   37.5      0.3   37.5   37.5
+1|9|1 Volt (SE)                    23.9   61.4   61.4     23.9   61.4   61.4
+1|10|92 If time is                  0.7   62.1   62.1      0.7   62.1   62.1
+1|11|80 Set Active Storage Area     0.3   62.4   62.4      0.3   62.4   62.4
+1|12|71 Average                     1.7   64.1   64.1      5.9   68.3   68.3
+ Output Data 1 Values
+1|13|92 If time is                  0.7   64.8   64.8      0.7   69.0   69.0
+1|14|80 Set Active Storage Area     0.3   65.1   65.1      0.3   69.3   69.3
+1|15|71 Average                     1.7   66.8   66.8      5.9   75.2   75.2
+ Output Data 1 Values
+1|16|54 Block Move                  2.1   68.9   68.9      2.1   77.3   77.3
+1|17|51 Spatial Average             8.4   77.3   77.3      8.4   85.7   85.7
+1|18|56 Saturation Vapor Pressure   4.5   81.8   81.8      4.5   90.2   90.2
+1|19|36 Z=X*Y                       1.5   83.3   83.3      1.5   91.7   91.7
+1|20|30 Z=F x 10^n                  1.0   84.3   84.3      1.0   92.7   92.7
+1|21|38 Z=X/Y                       3.0   87.3   87.3      3.0   95.7   95.7
+1|22|30 Z=F x 10^n                  1.0   88.3   88.3      1.0   96.7   96.7
+1|23|38 Z=X/Y                       3.0   91.3   91.3      3.0   99.7   99.7
+1|24|40 Z=LN(X)                     8.4   99.7   99.7      8.4  108.1  108.1
+1|25|30 Z=F x 10^n                  1.0  100.7  100.7      1.0  109.1  109.1
+1|26|36 Z=X*Y                       1.5  102.2  102.2      1.5  110.6  110.6
+1|27|30 Z=F x 10^n                  1.0  103.2  103.2      1.0  111.6  111.6
+1|28|35 Z=X-Y                       1.2  104.4  104.4      1.2  112.8  112.8
+1|29|38 Z=X/Y                       3.0  107.4  107.4      3.0  115.8  115.8
+1|30|31 Z=X                         0.7  108.1  108.1      0.7  116.5  116.5
+1|31|54 Block Move                  0.9  109.0  109.0      0.9  117.4  117.4
+1|32|35 Z=X-Y                       1.2  110.2  110.2      1.2  118.6  118.6
+1|33|92 If time is                  0.7  110.9  110.9      0.7  119.3  119.3
+1|34|80 Set Active Storage Area     0.3  111.2  111.2      0.3  119.6  119.6
+1|35|77 Real Time                   0.2  111.4  111.4      3.8  123.4  123.4
+ Output Data 3 Values
+1|36|71 Average                     1.7  113.1  113.1      5.9  129.3  129.3
+ Output Data 1 Values
+1|37|71 Average                     1.7  114.8  114.8      5.9  135.2  135.2
+ Output Data 1 Values
+1|38|71 Average                     1.7  116.5  116.5      5.9  141.1  141.1
+ Output Data 1 Values
+1|39|71 Average                     1.7  118.2  118.2      5.9  147.0  147.0
+ Output Data 1 Values
+1|40|37 Z=X*F                       1.2  119.4  119.4      1.2  148.2  148.2
+1|41|34 Z=X+F                       1.1  120.5  120.5      1.1  149.3  149.3
+1|42|34 Z=X+F                       1.1  121.6  121.6      1.1  150.4  150.4
+
+Program Table 1 Execution Interval   10.000 Seconds
+
+Table 1 Estimated Total Program Execution Time in msec  121.6 w/Output  150.4
+
+Table 1 Estimated Total Final Storage Locations used per day 69120
+
+
+
+Estimated Total Final Storage Locations used per day 69120

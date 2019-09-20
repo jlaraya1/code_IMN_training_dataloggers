@@ -1,0 +1,40 @@
+'CR1000
+'Created by Short Cut (2.5)
+
+'Declare Variables and Units
+Public Batt_Volt
+Public AirTC
+Public Humedad
+
+Units Batt_Volt=Volts
+Units AirTC=Deg C
+Units Humedad=%
+
+'Define Data Tables
+DataTable(Table1,True,-1)
+	DataInterval(0,30,Sec,10)
+	Maximum(1,AirTC,FP2,False,True)
+	Minimum(1,AirTC,FP2,False,True)
+	Maximum(1,Humedad,FP2,False,True)
+	Minimum(1,Humedad,FP2,False,True)
+EndTable
+
+DataTable(Table2,True,-1)
+	DataInterval(0,1440,Min,10)
+	Minimum(1,Batt_Volt,FP2,False,False)
+EndTable
+
+'Main Program
+BeginProg
+	Scan(10,Sec,1,0)
+		'Default Datalogger Battery Voltage measurement Batt_Volt:
+		Battery(Batt_Volt)
+		'CS500 Temperature & Relative Humidity Sensor measurements AirTC and Humedad:
+		VoltSE(AirTC,1,mV2500,1,0,0,_60Hz,0.1,-40.0)
+		VoltSE(Humedad,1,mV2500,2,0,0,_60Hz,0.1,0)
+		If (Humedad>100) And (Humedad<108) Then Humedad=100
+		'Call Data Tables and Store Data
+		CallTable(Table1)
+		CallTable(Table2)
+	NextScan
+EndProg

@@ -1,0 +1,68 @@
+'CR1000
+'Created by Short Cut (2.5)
+
+'Declare Variables and Units
+Public Batt_Volt
+Public AirTC
+Public RH
+Public Batt_Vo_2
+Public pro_panelsen
+
+Public pro_panel
+Public ds_panel
+Public dest
+Units Batt_Volt=Volts
+Units AirTC=Deg C
+Units RH=%
+Units Batt_Vo_2=Volts
+
+'Define Data Tables
+
+DataTable(Tablead,True,5)  
+	DataInterval(0,5,Min,10)
+	Average(1,AirTC,FP2,False)
+	Average(1,RH,FP2,False)
+	StdDev (1,AirTC,FP2,False)
+	StdDev (1,RH,FP2,False)
+	Average(1,dest,FP2,False)
+	StdDev (1,dest,FP2,False)
+	Average(1,pro_panelsen,FP2,False)
+	
+	
+EndTable
+
+
+DataTable(Table1,True,-1)  
+	DataInterval(0,5,Min,10)
+	Maximum(1,AirTC,FP2,False,True)
+	Minimum(1,AirTC,FP2,False,True)
+	Maximum(1,RH,FP2,False,True)
+	Minimum(1,RH,FP2,False,True)
+	Average(1,Batt_Vo_2,FP2,False)
+EndTable
+
+DataTable(Table2,True,-1)
+	DataInterval(0,1440,Min,10)
+	Minimum(1,Batt_Volt,FP2,False,False)
+EndTable
+
+'Main Program
+BeginProg
+	Scan(1,Sec,1,0)
+	 PanelTemp (dest,250)
+	
+		'Default Datalogger Battery Voltage measurement Batt_Volt:
+		Battery(Batt_Volt)
+		'CS500 Temperature & Relative Humidity Sensor measurements AirTC and RH:
+		VoltSe(AirTC,1,mV2500,1,0,0,_60Hz,0.1,-40.0)
+		VoltSE(RH,1,mV2500,2,0,0,_60Hz,0.1,0)
+		If (RH>100) AND (RH<108) Then RH=100
+		'Datalogger Battery Voltage measurement Batt_Vo_2:
+		Battery(Batt_Vo_2)
+		 pro_panelsen=AirTC-dest
+		'Call Data Tables and Store Data
+		CallTable(Table1)
+		CallTable(Table2)
+		CallTable(Tablead)
+	NextScan
+EndProg
