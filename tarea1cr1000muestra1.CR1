@@ -1,0 +1,80 @@
+'CR1000 Series
+
+'Declare Variables and Units de la programacion
+Public BattV
+Public AmbC
+Public AmbK
+Public AmbF
+Public RH
+Public hitemp
+Public lotemp
+Public bandera,arr(12),maxtem(2),mintem(2),promtemp
+Public av1,max1=0,min1=100,Tpanel,Tabs,time
+
+
+
+Units BattV=Volts
+Units AmbC=Deg C
+Units RH=%
+Units Tpanel=Deg C
+
+
+'Define Data Tables
+DataTable(Table1,True,1)
+	DataInterval(0,5,Min,10)
+	Maximum(1,AmbC,FP2,False,True)
+EndTable
+
+DataTable(tmp,True,1)
+	DataInterval(0,1,Min,10)
+	Maximum(1,AmbC,FP2,False,False)
+	Minimum (1,AmbC,FP2,False,False)
+	Average (1,AmbC,FP2,False)
+EndTable
+
+DataTable(cinco_min,True,-1)
+	DataInterval(0,5,Min,10)
+	Average (1,AmbC,FP2,False)
+	Maximum (1,AmbC,FP2,False,True)
+	Minimum (1,AmbC,FP2,False,true)
+	Sample (1,bandera,FP2)
+	Minimum (1,BattV,FP2,False,True)
+	Sample (1,Tpanel,FP2)
+	Sample (1,Tabs,FP2)
+	
+EndTable
+
+'Main Program
+BeginProg
+	Scan(5,Sec,1,0)
+		'Default Datalogger Battery Voltage measurement BattV
+		Battery(BattV)
+		'HMP50 Temperature & Relative Humidity Sensor measurements AmbTC and RH
+		VoltSe(AmbC,1,mV2500,1,0,0,_60Hz,0.1,-40)
+		'temperatura K y F
+		AmbK=AmbC+ 273.15
+		AmbF=(AmbC*1.8)+32
+		time=time+1
+'	 datos por minuto promedio, maximo y minimo 
+		'por minutio
+    
+      
+		'indicador bandera para temperatures 
+		hitemp=27
+    lotemp=25
+		If (AmbC>=hitemp)Then bandera=1
+		If (AmbC<hitemp) AND (AmbC>lotemp) Then bandera=0
+		If (AmbC<=lotemp) Then bandera=-1
+		
+		'temperatura panel
+		PanelTemp (Tpanel,250)
+		Tabs=ABS (Tpanel-AmbC)
+		
+		VoltSe(RH,1,mV2500,2,0,0,_60Hz,0.1,0)
+		If (RH>100) AND (RH<108) Then RH=100
+		'Call Data Tables and Store Data
+		CallTable(Table1)
+		CallTable(cinco_min)
+		CallTable (tmp)
+		NextScan
+EndProg

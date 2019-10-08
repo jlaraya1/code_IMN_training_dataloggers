@@ -1,0 +1,155 @@
+'CR1000 Series
+
+'Declare Variables and Units
+Public BattV
+Public AmbC
+Public AmbK
+Public AmbF
+Public RH
+Public hitemp
+Public lotemp
+Public bandera,arr(12),maxtem(2),mintem(2),promtemp
+Public av1,max1=0,min1=100,Tpanel,Tabs,time
+Public Message As String * 30
+
+Alias arr(1)=uno
+Alias arr(2)=dos
+Alias arr(3)=tres
+Alias arr(4)=cuatro
+Alias arr(5)=cinco
+Alias arr(6)=seis
+Alias arr(7)=siete
+Alias arr(8)=ocho
+Alias arr(9)=nueve
+Alias arr(10)=diez
+Alias arr(11)=once
+Alias arr(12)=doce
+Alias maxtem(1)=mxvalue
+Alias maxtem(2)=mxlocation
+Alias mintem(1)=mnvalue
+Alias mintem(2)=mnlocation
+
+Units BattV=Volts
+Units AmbC=Deg C
+Units RH=%
+Units Tpanel=Deg C
+
+
+'Define Data Tables
+DataTable(Table1,True,1)
+	DataInterval(0,5,Min,10)
+	Maximum(1,AmbC,FP2,False,True)
+EndTable
+
+DataTable(tmp,True,1)
+	DataInterval(0,1,Min,10)
+	Maximum(1,AmbC,FP2,False,False)
+	Minimum (1,AmbC,FP2,False,False)
+	Average (1,AmbC,FP2,False)
+EndTable
+
+DataTable(cinco_min,True,-1)
+	DataInterval(0,5,Min,10)
+	Average (1,AmbC,FP2,False)
+	Maximum (1,AmbC,FP2,False,True)
+	Minimum (1,AmbC,FP2,False,true)
+	Sample (1,bandera,FP2)
+	Minimum (1,BattV,FP2,False,True)
+	Sample (1,Tpanel,FP2)
+	Sample (1,Tabs,FP2)
+	
+EndTable
+
+'Main Program
+BeginProg
+	Scan(5,Sec,1,0)
+		'Default Datalogger Battery Voltage measurement BattV
+		Battery(BattV)
+		'HMP50 Temperature & Relative Humidity Sensor measurements AmbTC and RH
+		VoltSe(AmbC,1,mV2500,1,0,0,_60Hz,0.1,-40)
+		'temperatura K y F
+		AmbK=AmbC+ 273.15
+		AmbF=(AmbC*1.8)+32
+		time=time+1
+		'arreglo para datos por minuto promedio, maximo y minimo 
+		'por minutio
+     Select Case time
+     Case=1
+       uno=AmbC
+       Message = "uno"
+     Case=2
+       dos=AmbC
+       Message = "dos"
+     Case=3
+       tres=AmbC
+       Message = "tres"
+     Case=4
+       cuatro=AmbC
+       Message = "cuatro"
+     Case=5
+       cinco=AmbC
+       Message = "cinco"
+     Case=6
+       seis=AmbC
+       Message = "seis"
+     Case=7
+       siete=AmbC
+       Message = "siete"
+     Case=8
+       ocho=AmbC
+       Message = "ocho"
+     Case=9
+       nueve=AmbC
+       Message = "nueve"
+     Case=10
+       diez=AmbC
+       Message = "diez"
+     Case=11
+       once=AmbC
+       Message = "once"
+     Case=12
+       doce=AmbC
+       Message = "doce" 
+   EndSelect
+   If time=12 Then
+   AvgSpa (promtemp,12,arr(1))
+   MinSpa (mintem(1),12,arr(1))
+   MaxSpa (maxtem(1),12,arr(1))
+  EndIf 
+		
+	
+		'promedio en desplazamiento y maximo y minimo
+		'acumulativo por minuto
+    If TimeIntoInterval(0,1,Min)
+    time=0
+    max1=AmbC
+    min1=AmbC
+    EndIf
+		If (AmbC<min1) Then 
+		min1=AmbC
+    EndIf
+		If (AmbC>max1) Then
+		max1=AmbC
+    EndIf     
+    AvgRun (av1,1,AmbC,12)
+    
+      
+		'indicador bandera
+		hitemp=27
+    lotemp=25
+		If (AmbC>=hitemp)Then bandera=1
+		If (AmbC<hitemp) AND (AmbC>lotemp) Then bandera=0
+		If (AmbC<=lotemp) Then bandera=-1
+		
+		'temperatura panel
+		PanelTemp (Tpanel,250)
+		Tabs=ABS (Tpanel-AmbC)
+		
+		VoltSe(RH,1,mV2500,2,0,0,_60Hz,0.1,0)
+		If (RH>100) AND (RH<108) Then RH=100
+		'Call Data Tables and Store Data
+		CallTable(Table1)
+		CallTable(cinco_min)
+		CallTable (tmp)
+		NextScan
+EndProg
