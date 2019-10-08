@@ -1,0 +1,71 @@
+'CR1000 Series Datalogger
+'To create a different opening program template, type in new
+'instructions and select Template | Save as Default Template
+'date:
+'program author:
+
+'Declare Public Variables
+'Example:
+Public PTemp,TC_diff(4), batt_volt
+
+
+
+'Define Data Tables
+DataTable (Test,1,-1)
+	DataInterval (0,2,Min,10)
+	'Average (1,TC_diff,FP2,False)
+	 Average (4,TC_diff(),FP2,False)
+	Minimum (1,batt_volt,FP2,0,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+BeginProg
+	Scan (1,Sec,0,0)
+	  TCDiff (TC_diff(),4,mV2_5C,5,TypeT,PTemp,True ,0,250,1.0,0)  'leyendo cuatro termopares a partir del canal diferencial 5
+		PanelTemp (PTemp,250)
+		Battery (Batt_volt)
+		CallTable Test
+	NextScan
+EndProg
+
+
+
+
+' 
+'
+'Public PTemp, TCTemp(5)
+'
+' 
+'
+'DataTable (TCTemp,True,-1)
+'
+'    DataInterval (0,1,Min,10)
+'
+'    Average (5,TCTemp(),FP2,False)
+'
+'    Maximum (5,TCTemp(),FP2,False,True)
+'
+'    Minimum (5,TCTemp(),FP2,False,True)
+'
+'EndTable
+'
+' 
+'
+'BeginProg
+'
+'    Scan (1,Sec,3,0)
+'
+'      PanelTemp (PTemp,250)
+'
+'      TCDiff (TCTemp(),5,mV2_5,1,TypeT,PTemp,True ,0,250,1.0,0)
+'
+'      CallTable (TCTemp)
+'
+'    NextScan
+'
+'EndProg
+
+
+
+
+
